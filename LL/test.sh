@@ -1,6 +1,6 @@
 #!/bin/bash
 
-program_path=./LL
+program_path=./LL_parser
 red="\033[38;2;255;0;0m"
 green="\033[38;2;0;255;0m"
 results=0
@@ -8,7 +8,7 @@ results=0
 function test
 {
     output=$($program_path $1)
-    if [ $output = $2 ]
+    if [ "$output" = $2 ]
     then
         echo -e " $1 => $output $green OK\e[0m"
     else

@@ -25,6 +25,9 @@ Token get_next_token()
 	Token token;
 	char symbol = *input_str++;
 
+	while (isspace(symbol))
+		symbol = *input_str++;
+
 	switch (symbol)
 	{
 		case '0':
