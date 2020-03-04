@@ -1,6 +1,6 @@
 #include <ctype.h>
 
-#include "lexer.h"
+#include "../include/lexer.h"
 
 static char *input_str;
 

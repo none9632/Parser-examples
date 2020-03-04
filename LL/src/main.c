@@ -1,9 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
 
-#include "lexer.h"
-#include "parser.h"
+#include "../include/lexer.h"
+#include "../include/parser.h"
 
 void usage()
 {
