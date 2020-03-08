@@ -6,7 +6,7 @@
 
 void usage()
 {
-	printf("Usage: LL <expression>\n");
+	printf("Usage: ./LL_parser <expression>\n");
 	exit(EXIT_FAILURE);
 }
 

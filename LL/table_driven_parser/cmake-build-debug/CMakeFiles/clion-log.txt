@@ -1,0 +1,11 @@
+/home/none-9632/Programs/clion-2019.3.2/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/none-9632/myProjects/Parser-examples/LL/table_driven_parser
+-- The C compiler identification is GNU 9.2.1
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/none-9632/myProjects/Parser-examples/LL/table_driven_parser/cmake-build-debug
