@@ -1,24 +1,27 @@
 #ifndef LEXER_H
 #define LEXER_H
 
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 enum
 {
-	NUMBER,     // Number literal
+	NUM,        // Number literal
 	PLUS,       // '+'
-	MINUS,      // '-'
-	MULT,       // '*'
-	DIVISION,   // '/'
+	STAR,       // '*'
 	LP,         // '('
 	RP,         // ')'
-	UNKNOWN,    // Unknown literal
-	EOI         // End of input
+	EOI,        // End of input
+	UNKNOWN     // Unknown literal
 };
 
 typedef struct token
 {
 	int type;
 	int value;
-}Token;
+}
+Token;
 
 Token get_next_token();
 void init_lexer(char *input_str);

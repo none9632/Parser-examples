@@ -1,1 +1,0 @@
-/usr/bin/cc -g   CMakeFiles/LL.dir/src/lexer.c.o CMakeFiles/LL.dir/src/main.c.o CMakeFiles/LL.dir/src/parser.c.o  -o LL 

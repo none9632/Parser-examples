@@ -1,5 +1,3 @@
-#include <ctype.h>
-
 #include "../include/lexer.h"
 
 static char *input_str;
@@ -7,7 +5,7 @@ static char *input_str;
 static Token get_num_token()
 {
 	Token token;
-	token.type = NUMBER;
+	token.type = NUM;
 	token.value = 0;
 	input_str--;
 
@@ -51,21 +49,15 @@ Token get_next_token()
 		case '+':
 			token.type = PLUS;
 			break;
-		case '-':
-			token.type = MINUS;
-			break;
 		case '*':
-			token.type = MULT;
-			break;
-		case '/':
-			token.type = DIVISION;
+			token.type = STAR;
 			break;
 		case '\0':
 			token.type = EOI;
 			break;
 		default:
-			token.type = UNKNOWN;
-			break;
+			printf("ERROR\n");
+			exit(EXIT_FAILURE);
 	}
 
 	return token;

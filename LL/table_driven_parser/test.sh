@@ -17,21 +17,27 @@ function test
     fi
 }
 
+echo "---------------------------------------------------------"
 echo "Start program testing"
-test "0" "0"
-test "1+1" "2"
-test "1+(2*3)" "7"
-test "2*3+4" "10"
-test "2*3+4*5" "26"
-test "50/10" "5"
-test "3/2" "1"
-test "6*3/2" "9"
-test "(2+3)*(4+5)" "45"
-test "1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17" "153"
 
-if [ $results -eq 1 ]
+if [ -e $program_path ]
 then
-    echo -e "results:$red fail\e[0m"
+    test "0" "0"
+    test "1+1" "2"
+    test "1+(2*3)" "7"
+    test "2*3+4" "10"
+    test "2*3+4*5" "26"
+    test "(2+3)*(4+5)" "45"
+    test "1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17" "153"
+
+    if [ $results -eq 1 ]
+    then
+        echo -e "results:$red fail\e[0m"
+    else
+        echo -e "results:$green success\e[0m"
+    fi
 else
-    echo -e "results:$green success\e[0m"
+    echo " $program_path: No such file"
 fi
+
+echo "---------------------------------------------------------"
