@@ -25,4 +25,4 @@ test: $(TARGET)
 rebuild: clean $(TARGET)
 
 clean:
-	rm -rf $(OBJ_PATH) $(TARGET)
+	rm -rf $(OBJ_PATH)/*.o $(TARGET)
