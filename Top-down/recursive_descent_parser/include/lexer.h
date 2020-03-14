@@ -1,6 +1,7 @@
 #ifndef LEXER_H
 #define LEXER_H
 
+
 enum
 {
 	NUMBER,     // Number literal
@@ -18,7 +19,8 @@ typedef struct token
 {
 	int type;
 	int value;
-}Token;
+}
+Token;
 
 Token get_next_token();
 void init_lexer(char *input_str);

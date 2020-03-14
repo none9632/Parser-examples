@@ -86,20 +86,10 @@ static int expr()
 	return result;
 }
 
-static int stmt()
-{
-	int result = 0;
-
-	if (token.type != EOI)
-		result = expr();
-
-	return result;
-}
-
 int LL_parser()
 {
 	token = get_next_token();
-	int result = stmt();
+	int result = expr();
 
 	return result;
 }

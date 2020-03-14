@@ -1,4 +1,1 @@
-/home/none-9632/Programs/clion-2019.3.2/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/none-9632/myProjects/Parser-examples/LL
--- Configuring done
--- Generating done
--- Build files have been written to: /home/none-9632/myProjects/Parser-examples/LL/cmake-build-debug
+CMakeLists.txt not found in /home/none-9632/myProjects/Parser-examples/LL/recursive_descent_parser Select CMakeLists.txt file...

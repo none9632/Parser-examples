@@ -1,6 +1,6 @@
-# Table driven parser
+# Table-driven parser
 
-This is an simple example of a table driven LL(1) parser. 
+This is an simple example of a table-driven LL(1) parser. 
 
 ## Build and run
     make

@@ -1,4 +1,4 @@
-# LL parser
+# Recursive-Descent Parser
 
 This is an simple example of a recursive descent parser.
 
@@ -10,7 +10,8 @@ This is an simple example of a recursive descent parser.
     make test (or ./test.sh)
 
 ## Grammar
-    stmt -> expr | (epsilon)
-    expr -> term | term ('+'|'-') expr
-    term -> fact | fact ('*'|'/') term
-    fact -> NUM | ( expr )
+    E -> TE'
+    E' -> +TE' | -TE' | (epsilon)
+    T -> FT'
+    T' -> *FT' | /FT' | (epsilon)
+    F -> NUM | (E)

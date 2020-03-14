@@ -12,6 +12,8 @@ vpath %.o $(OBJ_PATH)
 SRC_FILES := $(wildcard $(SRC_PATH)/*.c)
 OBJ_FILES := $(subst $(SRC_PATH),$(OBJ_PATH),$(SRC_FILES:.c=.o))
 
+rebuild: clean $(TARGET)
+
 $(TARGET): $(notdir $(OBJ_FILES))
 	$(CC) $(CCFLAG) $(OBJ_FILES) -o $(TARGET)
 
