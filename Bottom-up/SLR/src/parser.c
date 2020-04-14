@@ -25,7 +25,7 @@ static void match_token(int type)
 	token = get_next_token();
 }
 
-int LR_parser()
+int SLR_parser()
 {
 	token = get_next_token();
 	int result = 0;

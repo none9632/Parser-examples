@@ -16,7 +16,6 @@ $(TARGET): $(notdir $(OBJ_FILES))
 	$(CC) $(CCFLAG) $(OBJ_FILES) -o $(TARGET)
 
 %.o: %.c
-	@mkdir -p obj
 	$(CC) $(CCFLAG) -c $< -o $(OBJ_PATH)/$@
 
 test: $(TARGET)

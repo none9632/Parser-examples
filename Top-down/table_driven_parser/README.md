@@ -39,6 +39,7 @@ E' | 1 | +2*3$ | Predict E'->+TE'
 (PLUS_ACT)E'(MULT_ACT)T' | 1 2 3 | $ | Predict T'->e
 (PLUS_ACT)E'(MULT_ACT) | 1 2 3 | $ | Perform action MULT_ACT
 (PLUS_ACT)E' | 1 6 | $ | Predict E'->e
+(PLUS_ACT) | 1 6 | $ | Perform action PLUS_ACT
 | NULL | 7 | $ | Success, output top value stack
 
 ### Annotation

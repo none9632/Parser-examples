@@ -1,6 +1,6 @@
 #!/bin/bash
 
-program_path=./LL_parser
+program_path=./SLR_parser
 red="\033[38;2;255;0;0m"
 green="\033[38;2;0;255;0m"
 results=0

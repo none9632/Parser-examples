@@ -7,6 +7,6 @@
 #include "../include/lexer.h"
 #include "../include/stack.h"
 
-int LR_parser();
+int SLR_parser();
 
 #endif

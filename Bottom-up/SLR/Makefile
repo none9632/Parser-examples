@@ -1,4 +1,4 @@
-TARGET := LR_parser
+TARGET := SLR_parser
 
 CC := gcc
 CCFLAG := -Wall -g

@@ -10,7 +10,7 @@ typedef struct stack
 	size_t length;
 	size_t capacity;
 }
-Stack;
+		Stack;
 
 Stack *new_stack(void);
 void stack_push(Stack *v, int elem);
