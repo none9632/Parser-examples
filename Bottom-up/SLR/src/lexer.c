@@ -5,7 +5,7 @@ static char *input_str;
 static Token get_num_token()
 {
 	Token token;
-	token.type = NUMBER;
+	token.type = NUM;
 	token.value = 0;
 	input_str--;
 
@@ -56,7 +56,7 @@ Token get_next_token()
 			token.type = MULT;
 			break;
 		case '/':
-			token.type = DIVISION;
+			token.type = DIV;
 			break;
 		case '\0':
 			token.type = EOI;
