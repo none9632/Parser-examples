@@ -1,15 +1,8 @@
 #include "../include/parser.h"
-#include "../include/lexer.h"
 
 static Token token;
 
 static int expr();
-
-static void error()
-{
-	printf("ERROR\n");
-	exit(EXIT_FAILURE);
-}
 
 static void match_token(int type)
 {
@@ -35,8 +28,9 @@ static int fact()
 			match_token(RP);
 			break;
 
-		case UNKNOWN:
+		default:
 			error();
+			break;
 	}
 
 	return result;
@@ -90,6 +84,9 @@ int LL_parser()
 {
 	token = get_next_token();
 	int result = expr();
+
+	if (token.type != EOI)
+		error();
 
 	return result;
 }

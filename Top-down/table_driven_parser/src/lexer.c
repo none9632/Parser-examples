@@ -2,6 +2,12 @@
 
 static char *input_str;
 
+void error()
+{
+	printf("ERROR\n");
+	exit(EXIT_FAILURE);
+}
+
 static Token get_num_token()
 {
 	Token token;
@@ -56,8 +62,7 @@ Token get_next_token()
 			token.type = EOI;
 			break;
 		default:
-			printf("ERROR\n");
-			exit(EXIT_FAILURE);
+			error();
 	}
 
 	return token;

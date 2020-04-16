@@ -1,8 +1,12 @@
-#include <ctype.h>
-
 #include "../include/lexer.h"
 
 static char *input_str;
+
+void error()
+{
+	printf("ERROR\n");
+	exit(EXIT_FAILURE);
+}
 
 static Token get_num_token()
 {
@@ -64,7 +68,7 @@ Token get_next_token()
 			token.type = EOI;
 			break;
 		default:
-			token.type = UNKNOWN;
+			error();
 			break;
 	}
 

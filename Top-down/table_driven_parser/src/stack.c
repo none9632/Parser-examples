@@ -20,9 +20,10 @@ void stack_push(Stack *v, int elem)
 }
 
 // removes a top value
-void stack_pop(Stack *v)
+int stack_pop(Stack *v)
 {
 	v->length--;
+	return v->data[v->length];
 }
 
 // returns a top value

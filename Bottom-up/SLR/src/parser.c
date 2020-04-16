@@ -130,12 +130,6 @@ static int production_table[LINE_PRODUCTION_TABLE][COLUMNS_PRODUCTION_TABLE] =
 		{ FACT, LP,   EXPR,  RP    }
 };
 
-static void error()
-{
-	printf("ERROR\n");
-	exit(EXIT_FAILURE);
-}
-
 int SLR_parser()
 {
 	token = get_next_token();

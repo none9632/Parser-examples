@@ -7,7 +7,7 @@
 #define COLUMNS_PRODUCTION_TABLE 4
 #define LINE_PRODUCTION_TABLE 8
 
-// Nonterminals
+// Non-terminals
 enum
 {
 	EXPR = 10,
@@ -182,12 +182,6 @@ static int nonterminal_to_index(int nonterminal)
 	return nonterminal - EXPR;
 }
 
-static void error()
-{
-	printf("ERROR\n");
-	exit(EXIT_FAILURE);
-}
-
 int LL_parser()
 {
 	init_parser_table();
@@ -206,10 +200,8 @@ int LL_parser()
 		// Perform action
 		if (top_elem >= PLUS_ATC)
 		{
-			int value1 = stack_top(value_stack);
-			stack_pop(value_stack);
-			int value2 = stack_top(value_stack);
-			stack_pop(value_stack);
+			int value1 = stack_pop(value_stack);
+			int value2 = stack_pop(value_stack);
 
 			switch (top_elem)
 			{
