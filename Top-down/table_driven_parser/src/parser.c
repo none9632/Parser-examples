@@ -25,8 +25,6 @@ enum
 };
 
 static Token token;
-static int parse_table[LINE_PARSE_TABLE][COLUMNS_PARSE_TABLE];
-static int production_table[LINE_PRODUCTION_TABLE][COLUMNS_PRODUCTION_TABLE];
 static Stack *parse_stack;
 static Stack *value_stack;
 
@@ -46,55 +44,14 @@ static Stack *value_stack;
  * |  F  | F->NUM  |         |         | F->(E)  |         |         |
  * |-----------------------------------------------------------------|
  */
-static void init_parser_table()
+static int parse_table[LINE_PARSE_TABLE][COLUMNS_PARSE_TABLE] =
 {
-	for (int i = 0; i < LINE_PARSE_TABLE; i++)
-	{
-		switch (i)
-		{
-			case 0:
-				parse_table[i][NUM] = 1;
-				parse_table[i][PLUS] = EMPTY;
-				parse_table[i][STAR] = EMPTY;
-				parse_table[i][LP] = 1;
-				parse_table[i][RP] = EMPTY;
-				parse_table[i][EOI] = EMPTY;
-				break;
-			case 1:
-				parse_table[i][NUM] = EMPTY;
-				parse_table[i][PLUS] = 2;
-				parse_table[i][STAR] = EMPTY;
-				parse_table[i][LP] = EMPTY;
-				parse_table[i][RP] = 7;
-				parse_table[i][EOI] = 7;
-				break;
-			case 2:
-				parse_table[i][NUM] = 3;
-				parse_table[i][PLUS] = EMPTY;
-				parse_table[i][STAR] = EMPTY;
-				parse_table[i][LP] = 3;
-				parse_table[i][RP] = EMPTY;
-				parse_table[i][EOI] = 7;
-				break;
-			case 3:
-				parse_table[i][NUM] = EMPTY;
-				parse_table[i][PLUS] = 7;
-				parse_table[i][STAR] = 4;
-				parse_table[i][LP] = EMPTY;
-				parse_table[i][RP] = 7;
-				parse_table[i][EOI] = 7;
-				break;
-			case 4:
-				parse_table[i][NUM] = 5;
-				parse_table[i][PLUS] = EMPTY;
-				parse_table[i][STAR] = EMPTY;
-				parse_table[i][LP] = 6;
-				parse_table[i][RP] = EMPTY;
-				parse_table[i][EOI] = 7;
-				break;
-		}
-	}
-}
+		{ 1,     EMPTY, EMPTY, 1,     EMPTY, EMPTY },
+		{ EMPTY, 2,     EMPTY, EMPTY, 7,     7     },
+		{ 3,     EMPTY, EMPTY, 3,     EMPTY, EMPTY },
+		{ EMPTY, 7,     4,     EMPTY, 7,     7     },
+		{ 5,     EMPTY, EMPTY, 6,     EMPTY, EMPTY },
+};
 
 /*
  * Production table
@@ -118,63 +75,17 @@ static void init_parser_table()
  * | 7 |           |           |           |           |
  * |---------------------------------------------------|
  */
-static void init_production_table()
+static int production_table[LINE_PRODUCTION_TABLE][COLUMNS_PRODUCTION_TABLE] =
 {
-	for (int i = 0; i < LINE_PRODUCTION_TABLE; i++)
-	{
-		switch (i)
-		{
-			case 0:
-				production_table[i][0] = EXPR;
-				production_table[i][1] = EMPTY;
-				production_table[i][2] = EMPTY;
-				production_table[i][3] = EMPTY;
-				break;
-			case 1:
-				production_table[i][0] = EXPR_PRIME;
-				production_table[i][1] = TERM;
-				production_table[i][2] = EMPTY;
-				production_table[i][3] = EMPTY;
-				break;
-			case 2:
-				production_table[i][0] = PLUS_ATC;
-				production_table[i][1] = EXPR_PRIME;
-				production_table[i][2] = TERM;
-				production_table[i][3] = PLUS;
-				break;
-			case 3:
-				production_table[i][0] = TERM_PRIME;
-				production_table[i][1] = FACT;
-				production_table[i][2] = EMPTY;
-				production_table[i][3] = EMPTY;
-				break;
-			case 4:
-				production_table[i][0] = MULT_ACT;
-				production_table[i][1] = TERM_PRIME;
-				production_table[i][2] = FACT;
-				production_table[i][3] = STAR;
-				break;
-			case 5:
-				production_table[i][0] = NUM;
-				production_table[i][1] = EMPTY;
-				production_table[i][2] = EMPTY;
-				production_table[i][3] = EMPTY;
-				break;
-			case 6:
-				production_table[i][0] = RP;
-				production_table[i][1] = EXPR;
-				production_table[i][2] = LP;
-				production_table[i][3] = EMPTY;
-				break;
-			case 7:
-				production_table[i][0] = EMPTY;
-				production_table[i][1] = EMPTY;
-				production_table[i][2] = EMPTY;
-				production_table[i][3] = EMPTY;
-				break;
-		}
-	}
-}
+		{ EXPR,       EMPTY,      EMPTY, EMPTY },
+		{ EXPR_PRIME, TERM,       EMPTY, EMPTY },
+		{ PLUS_ATC,   EXPR_PRIME, TERM,  PLUS  },
+		{ TERM_PRIME, FACT,       EMPTY, EMPTY },
+		{ MULT_ACT,   TERM_PRIME, FACT,  STAR  },
+		{ NUM,        EMPTY,      EMPTY, EMPTY },
+		{ RP,         EXPR,       LP,    EMPTY },
+		{ EMPTY,      EMPTY,      EMPTY, EMPTY }
+};
 
 // Getting index from non terminal
 static int nonterminal_to_index(int nonterminal)
@@ -184,9 +95,6 @@ static int nonterminal_to_index(int nonterminal)
 
 int LL_parser()
 {
-	init_parser_table();
-	init_production_table();
-
 	parse_stack = new_stack();
 	value_stack = new_stack();
 	stack_push(parse_stack, EXPR);

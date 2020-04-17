@@ -44,12 +44,12 @@ E' | 1 | +2*3$ | Predict E'->+TE'
 
 ### Annotation
 
-Perform action
+#####Perform action
 * pop two values from `value_stack`
 * push result of the perform action in `value_stack`
 * pop top value from `parse_stack`
 
-Predict
+##### Predict
 * getting index from `parser_table`
 * if index is empty
     * error
@@ -57,7 +57,7 @@ Predict
     * pop top value from `parse_stack`
     * push production from `production_table` in `parse_stack`
 
-Match
+#####Match
 * if top value from `parse_stack` matches the input value then
     * if top was `NUM` then push value in `value_stack`
     * pop top value from `parse_stack`
