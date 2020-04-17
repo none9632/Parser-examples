@@ -42,11 +42,11 @@ S(0)S(1) | 7 | $ | Accept
 
 In order to understand what to do next, the parser uses `parse_table` and `produciton_table`.
 
-#####Shift
+##### Shift
 * puts the state on `parse_stack` according to `parse_table`
 * if the input `token.type` is a number then puts `token.value` on `value_stack`
 
-#####Reduce
+##### Reduce
 * removes states equal to the number of elements in the production from `parse_stack`
 * puts the state on `parse_stack` according to `parse_table`
 * if production is 0, 1, 3 or 4 then
