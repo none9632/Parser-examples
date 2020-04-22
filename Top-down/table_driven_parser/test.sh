@@ -8,22 +8,22 @@ results=0
 function test
 {
     output=$($program_path "$1")
+
     if [ "$output" = $2 ]
     then
-        echo -e "    $1 => $output $green OK\e[0m"
+        echo -e " <$green OK \e[0m>    $1 => $output"
     else
         results=1
-        echo -e "    $1 => $output $red ERROR\e[0m"
+        echo -e " <$red ERROR \e[0m>    $1 => $output"
     fi
 }
 
-echo "-------------------------------------------------------------"
+echo "--------------------------------------------------------------------"
 echo " Start program testing"
-echo "-------------------------------------------------------------"
+echo "--------------------------------------------------------------------"
 
 if [ -e $program_path ]
 then
-    echo ""
     test "0" "0"
     test "1+1" "2"
     test "1+(2*3)" "7"
@@ -38,7 +38,6 @@ then
     test "532/" "ERROR"
     test "()234" "ERROR"
     test "word" "ERROR"
-    echo ""
 else
     results=1
     echo ""
@@ -47,7 +46,7 @@ else
 fi
 
 
-echo "-------------------------------------------------------------"
+echo "--------------------------------------------------------------------"
 
 if [ $results -eq 1 ]
 then
@@ -56,4 +55,4 @@ else
     echo -e " results:$green success\e[0m"
 fi
 
-echo "-------------------------------------------------------------"
+echo "--------------------------------------------------------------------"
