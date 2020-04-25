@@ -2,10 +2,16 @@
 
 static char *input_str;
 
+void error()
+{
+	printf("ERROR\n");
+	exit(EXIT_FAILURE);
+}
+
 static Token get_num_token()
 {
 	Token token;
-	token.type = NUMBER;
+	token.type = NUM;
 	token.value = 0;
 	input_str--;
 
@@ -56,13 +62,13 @@ Token get_next_token()
 			token.type = MULT;
 			break;
 		case '/':
-			token.type = DIVISION;
+			token.type = DIV;
 			break;
 		case '\0':
 			token.type = EOI;
 			break;
 		default:
-			token.type = UNKNOWN;
+			error();
 			break;
 	}
 

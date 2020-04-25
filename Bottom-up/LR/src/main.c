@@ -6,7 +6,7 @@
 
 void usage()
 {
-	printf("Usage: ./LR_parser <expression>\n");
+	printf("Usage: ./SLR_parser <expression>\n");
 	exit(EXIT_FAILURE);
 }
 

@@ -11,7 +11,7 @@ function test
 
     if [ "$output" = $2 ]
     then
-        echo -e " <$green OK \e[0m>    $1 => $output"
+        echo -e " <$green OK \e[0m>       $1 => $output"
     else
         results=1
         echo -e " <$red ERROR \e[0m>    $1 => $output"

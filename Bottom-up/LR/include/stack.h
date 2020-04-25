@@ -14,7 +14,7 @@ Stack;
 
 Stack *new_stack(void);
 void stack_push(Stack *v, int elem);
-void stack_pop(Stack *v);
+int stack_pop(Stack *v);
 int stack_top(Stack *v);
 
 #endif
