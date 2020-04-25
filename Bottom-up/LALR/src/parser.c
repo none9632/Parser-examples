@@ -3,6 +3,21 @@
 #define EMPTY -1
 #define EMPTY_ELEM EMPTY, EMPTY
 
+#define _2_21_ 2
+#define _3_20_ 3
+#define _4_18_ 4
+#define _5_19_ 5
+#define _6_16_ 6
+#define _7_17_ 7
+#define _8_25_ 8
+#define _9_26_ 9
+#define _10_22_ 10
+#define _11_23_ 11
+#define _12_24_ 12
+#define _13_27_ 13
+#define _14_28_ 14
+#define _15_29_ 15
+
 #define COLUMNS_PARSE_TABLE 11
 #define LINE_PARSE_TABLE 16
 #define COLUMNS_PRODUCTION_TABLE 4
@@ -38,62 +53,62 @@ static Stack *value_stack;
 
 /*
  * Parse table
- * |---------------------------------------------------------------------------------|
- * |-------|                          Action                          |     Goto     |
- * |---------------------------------------------------------------------------------|
- * | State | NUM  |  +   |  -   |  *   |  /   |  (   |   )   |   $    | E  | T  | F  |
- * |---------------------------------------------------------------------------------|
- * |   0   | S(4) |      |      |      |      | S(3) |       |        | 1  | 2  | 5  |
- * |---------------------------------------------------------------------------------|
- * |   1   |      | S(6) | S(7) |      |      |      |       | accept |    |    |    |
- * |---------------------------------------------------------------------------------|
- * |   2   |      | R(2) | R(2) | S(8) | S(9) |      | R(2)  |  R(2)  |    |    |    |
- * |---------------------------------------------------------------------------------|
- * |   3   | S(4) |      |      |      |      | S(3) |       |        | 10 | 2  | 5  |
- * |---------------------------------------------------------------------------------|
- * |   4   |      | R(6) | R(6) | R(6) | R(6) |      | R(6)  |  R(6)  |    |    |    |
- * |---------------------------------------------------------------------------------|
- * |   5   |      | R(5) | R(5) | R(5) | R(5) |      | R(5)  |  R(5)  |    |    |    |
- * |---------------------------------------------------------------------------------|
- * |   6   | S(4) |      |      |      |      | S(3) |       |        |    | 11 | 5  |
- * |---------------------------------------------------------------------------------|
- * |   7   | S(4) |      |      |      |      | S(3) |       |        |    | 12 | 5  |
- * |---------------------------------------------------------------------------------|
- * |   8   | S(4) |      |      |      |      | S(3) |       |        |    |    | 13 |
- * |---------------------------------------------------------------------------------|
- * |   9   | S(4) |      |      |      |      | S(3) |       |        |    |    | 14 |
- * |---------------------------------------------------------------------------------|
- * |  10   |      | S(6) | S(7) |      |      |      | S(15) |        |    |    |    |
- * |---------------------------------------------------------------------------------|
- * |  11   |      | R(0) | R(0) | S(8) | S(9) |      | R(0)  |  R(0)  |    |    |    |
- * |---------------------------------------------------------------------------------|
- * |  12   |      | R(1) | R(1) | S(8) | S(9) |      | R(1)  |  R(1)  |    |    |    |
- * |---------------------------------------------------------------------------------|
- * |  13   |      | R(3) | R(3) | R(3) | R(3) |      | R(3)  |  R(3)  |    |    |    |
- * |---------------------------------------------------------------------------------|
- * |  14   |      | R(4) | R(4) | R(4) | R(4) |      | R(4)  |  R(4)  |    |    |    |
- * |---------------------------------------------------------------------------------|
- * |  15   |      | R(7) | R(7) | R(7) | R(7) |      | R(7)  |  R(7)  |    |    |    |
- * |---------------------------------------------------------------------------------|
+ * |---------------------------------------------------------------------------------------------------------------|
+ * |-------|                                     Action                                    |         Goto          |
+ * |---------------------------------------------------------------------------------------------------------------|
+ * | State |   NUM   |    +    |    -    |    *    |    /    |    (    |    )     |   $    |   E   |   T   |   F   |
+ * |---------------------------------------------------------------------------------------------------------------|
+ * |   0   | S(4_18) |         |         |         |         | S(5_19) |          |        |   1   | 2_21  | 3_20  |
+ * |---------------------------------------------------------------------------------------------------------------|
+ * |   1   |         | S(6_16) | S(7_17) |         |         |         |          | accept |       |       |       |
+ * |---------------------------------------------------------------------------------------------------------------|
+ * | 2_21  |         |  R(2)   |  R(2)   | S(8_25) | S(9_26) |         |   R(2)   |  R(2)  |       |       |       |
+ * |---------------------------------------------------------------------------------------------------------------|
+ * | 3_20  |         |  R(5)   |  R(5)   |   R(5)  |  R(5)   |         |   R(5)   |  R(5)  |       |       |       |
+ * |---------------------------------------------------------------------------------------------------------------|
+ * | 4_18  |         |  R(6)   |  R(6)   |   R(6)  |  R(6)   |         |   R(6)   |  R(6)  |       |       |       |
+ * |---------------------------------------------------------------------------------------------------------------|
+ * | 5_19  | S(4_18) |         |         |         |         | S(5_19) |          |        | 10_22 | 2_21  | 3_20  |
+ * |---------------------------------------------------------------------------------------------------------------|
+ * | 6_16  | S(4_18) |         |         |         |         | S(5_19) |          |        |       | 11_23 | 3_20  |
+ * |---------------------------------------------------------------------------------------------------------------|
+ * | 7_17  | S(4_18) |         |         |         |         | S(5_19) |          |        |       | 12_24 | 3_20  |
+ * |---------------------------------------------------------------------------------------------------------------|
+ * | 8_25  | S(4_18) |         |         |         |         | S(5_19) |          |        |       |       | 13_27 |
+ * |---------------------------------------------------------------------------------------------------------------|
+ * | 9|26  | S(4_18) |         |         |         |         | S(5_19) |          |        |       |       | 14_28 |
+ * |---------------------------------------------------------------------------------------------------------------|
+ * | 10_22 |         | S(6_16) | S(7_17) |         |         |         | S(15_29) |        |       |       |       |
+ * |---------------------------------------------------------------------------------------------------------------|
+ * | 11_23 |         |  R(0)   |  R(0)   | S(8_25) | S(9_26) |         |   R(0)   |  R(0)  |       |       |       |
+ * |---------------------------------------------------------------------------------------------------------------|
+ * | 12_24 |         |  R(1)   |  R(1)   | S(8_25) | S(9_26) |         |   R(1)   |  R(1)  |       |       |       |
+ * |---------------------------------------------------------------------------------------------------------------|
+ * | 13_27 |         |  R(3)   |  R(3)   |   R(3)  |  R(3)   |         |   R(3)   |  R(3)  |       |       |       |
+ * |---------------------------------------------------------------------------------------------------------------|
+ * | 14_28 |         |  R(4)   |  R(4)   |   R(4)  |  R(4)   |         |   R(4)   |  R(4)  |       |       |       |
+ * |---------------------------------------------------------------------------------------------------------------|
+ * | 15_29 |         |  R(7)   |  R(7)   |   R(7)  |  R(7)   |         |   R(7)   |  R(7)  |       |       |       |
+ * |---------------------------------------------------------------------------------------------------------------|
  */
 static Elem parse_table[LINE_PARSE_TABLE][COLUMNS_PARSE_TABLE] =
 {
-		{ {SHIFT, 4},   {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {SHIFT, 3},   {EMPTY_ELEM}, {EMPTY_ELEM}, {GOTO, 1},    {GOTO, 2},    {GOTO, 5}    },
-		{ {EMPTY_ELEM}, {SHIFT, 6},   {SHIFT, 7},   {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {ACCEPT, 0},  {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM} },
-		{ {EMPTY_ELEM}, {REDUCE, 2},  {REDUCE, 2},  {SHIFT, 8},   {SHIFT, 9},   {EMPTY_ELEM}, {REDUCE, 2},  {REDUCE, 2},  {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM} },
-		{ {SHIFT, 4},   {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {SHIFT, 3},   {EMPTY_ELEM}, {EMPTY_ELEM}, {GOTO, 10},   {GOTO, 2},    {GOTO, 5}    },
-		{ {EMPTY_ELEM}, {REDUCE, 6},  {REDUCE, 6},  {REDUCE, 6},  {REDUCE, 6},  {EMPTY_ELEM}, {REDUCE, 6},  {REDUCE, 6},  {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM} },
-		{ {EMPTY_ELEM}, {REDUCE, 5},  {REDUCE, 5},  {REDUCE, 5},  {REDUCE, 5},  {EMPTY_ELEM}, {REDUCE, 5},  {REDUCE, 5},  {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM} },
-		{ {SHIFT, 4},   {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {SHIFT, 3},   {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {GOTO, 11},   {GOTO, 5}    },
-		{ {SHIFT, 4},   {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {SHIFT, 3},   {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {GOTO, 12},   {GOTO, 5}    },
-		{ {SHIFT, 4},   {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {SHIFT, 3},   {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {GOTO, 13}   },
-		{ {SHIFT, 4},   {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {SHIFT, 3},   {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {GOTO, 14}   },
-		{ {EMPTY_ELEM}, {SHIFT, 6},   {SHIFT, 7},   {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {SHIFT, 15},  {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM} },
-		{ {EMPTY_ELEM}, {REDUCE, 0},  {REDUCE, 0},  {SHIFT, 8},   {SHIFT, 9},   {EMPTY_ELEM}, {REDUCE, 0},  {REDUCE, 0},  {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM} },
-		{ {EMPTY_ELEM}, {REDUCE, 1},  {REDUCE, 1},  {SHIFT, 8},   {SHIFT, 9},   {EMPTY_ELEM}, {REDUCE, 1},  {REDUCE, 1},  {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM} },
-		{ {EMPTY_ELEM}, {REDUCE, 3},  {REDUCE, 3},  {REDUCE, 3},  {REDUCE, 3},  {EMPTY_ELEM}, {REDUCE, 3},  {REDUCE, 3},  {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM} },
-		{ {EMPTY_ELEM}, {REDUCE, 4},  {REDUCE, 4},  {REDUCE, 4},  {REDUCE, 4},  {EMPTY_ELEM}, {REDUCE, 4},  {REDUCE, 4},  {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM} },
-		{ {EMPTY_ELEM}, {REDUCE, 7},  {REDUCE, 7},  {REDUCE, 7},  {REDUCE, 7},  {EMPTY_ELEM}, {REDUCE, 7},  {REDUCE, 7},  {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM} }
+		{ {SHIFT, _4_18_}, {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM},    {SHIFT, _5_19_}, {EMPTY_ELEM},     {EMPTY_ELEM}, {GOTO, 1},       {GOTO, _2_21_},  {GOTO, _3_20_}  },
+		{ {EMPTY_ELEM},    {SHIFT, _6_16_}, {SHIFT, _7_17_}, {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM},     {ACCEPT, 0},  {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM}    },
+		{ {EMPTY_ELEM},    {REDUCE, 2},     {REDUCE, 2},     {SHIFT, _8_25_}, {SHIFT, _9_26_}, {EMPTY_ELEM},    {REDUCE, 2},      {REDUCE, 2},  {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM}    },
+		{ {EMPTY_ELEM},    {REDUCE, 5},     {REDUCE, 5},     {REDUCE, 5},     {REDUCE, 5},     {EMPTY_ELEM},    {REDUCE, 5},      {REDUCE, 5},  {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM}    },
+		{ {EMPTY_ELEM},    {REDUCE, 6},     {REDUCE, 6},     {REDUCE, 6},     {REDUCE, 6},     {EMPTY_ELEM},    {REDUCE, 6},      {REDUCE, 6},  {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM}    },
+		{ {SHIFT, _4_18_}, {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM},    {SHIFT, _5_19_}, {EMPTY_ELEM},     {EMPTY_ELEM}, {GOTO, _10_22_}, {GOTO, _2_21_},  {GOTO, _3_20_}  },
+		{ {SHIFT, _4_18_}, {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM},    {SHIFT, _5_19_}, {EMPTY_ELEM},     {EMPTY_ELEM}, {EMPTY_ELEM},    {GOTO, _11_23_}, {GOTO, _3_20_}  },
+		{ {SHIFT, _4_18_}, {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM},    {SHIFT, _5_19_}, {EMPTY_ELEM},     {EMPTY_ELEM}, {EMPTY_ELEM},    {GOTO, _12_24_}, {GOTO, _3_20_}  },
+		{ {SHIFT, _4_18_}, {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM},    {SHIFT, _5_19_}, {EMPTY_ELEM},     {EMPTY_ELEM}, {EMPTY_ELEM},    {EMPTY_ELEM},    {GOTO, _13_27_} },
+		{ {SHIFT, _4_18_}, {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM},    {SHIFT, _5_19_}, {EMPTY_ELEM},     {EMPTY_ELEM}, {EMPTY_ELEM},    {EMPTY_ELEM},    {GOTO, _14_28_} },
+		{ {EMPTY_ELEM},    {SHIFT, _6_16_}, {SHIFT, _7_17_}, {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM},    {SHIFT, _15_29_}, {EMPTY_ELEM}, {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM}    },
+		{ {EMPTY_ELEM},    {REDUCE, 0},     {REDUCE, 0},     {SHIFT, _8_25_}, {SHIFT, _9_26_}, {EMPTY_ELEM},    {REDUCE, 0},      {REDUCE, 0},  {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM}    },
+		{ {EMPTY_ELEM},    {REDUCE, 1},     {REDUCE, 1},     {SHIFT, _8_25_}, {SHIFT, _9_26_}, {EMPTY_ELEM},    {REDUCE, 1}, 	  {REDUCE, 1},  {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM}    },
+		{ {EMPTY_ELEM},    {REDUCE, 3},     {REDUCE, 3},     {REDUCE, 3},     {REDUCE, 3},     {EMPTY_ELEM},    {REDUCE, 3},      {REDUCE, 3},  {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM}    },
+		{ {EMPTY_ELEM},    {REDUCE, 4},     {REDUCE, 4},     {REDUCE, 4},     {REDUCE, 4},     {EMPTY_ELEM},    {REDUCE, 4},      {REDUCE, 4},  {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM}    },
+		{ {EMPTY_ELEM},    {REDUCE, 7},     {REDUCE, 7},     {REDUCE, 7},     {REDUCE, 7},     {EMPTY_ELEM},    {REDUCE, 7},      {REDUCE, 7},  {EMPTY_ELEM},    {EMPTY_ELEM},    {EMPTY_ELEM}    }
 };
 
 /*
