@@ -3,6 +3,10 @@
 This is an simple examples of a SLR(1), LR(1) and LALR(1) parsers. The parsers data code
 is very similar, the only difference is in `parse_table`.
 
+#### Annotation
+
+`graph.drawio` - goto-graph(*maybe it's called something else*), opens with [drawio](https://app.diagrams.net)
+
 ## Build and run
     make
     ./SLR_parser <expression>
@@ -20,19 +24,6 @@ is very similar, the only difference is in `parse_table`.
     F -> NUM        (6)
     F -> (E)        (7)
     
-## File list
-
-Description of files and directories
-
-File | Description
------|------------
-**include** | folder for header files
-**obj** | folder for object files
-**src** | folder for .c files
-Makefile | Makefile to build parser
-test.sh | bash script for testing
-graph.drawio | goto-graph, opens with [drawio](https://app.diagrams.net)
-
 ## Example
 Example of how SLR(1) parses the string `1+2*3`:
 
@@ -52,7 +43,7 @@ S(0)S(1)S(6)S(12)S(8)S(13) | 1 2 3 | $ | Reduce R(3)
 S(0)S(1)S(6)S(11) | 1 6 | $ | Reduce R(0)
 S(0)S(1) | 7 | $ | Accept
 
-### Annotation
+### Description
 
 In order to understand what to do next, the parser uses `parse_table` and `produciton_table`.
 SLR, LR and LALR parsers work on the same principle, the difference is only in `parse_table`

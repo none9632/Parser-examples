@@ -1,6 +1,6 @@
 # Recursive-Descent Parser
 
-This is an simple example of a recursive descent parser.
+This is an simple example of a recursive-descent parser.
 
 ## Build and run
     make
