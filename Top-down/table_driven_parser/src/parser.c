@@ -81,7 +81,7 @@ static int production_table[LINE_PRODUCTION_TABLE][COLUMNS_PRODUCTION_TABLE] =
 		{ EXPR_PRIME, TERM,       EMPTY, EMPTY },
 		{ PLUS_ATC,   EXPR_PRIME, TERM,  PLUS  },
 		{ TERM_PRIME, FACT,       EMPTY, EMPTY },
-		{ MULT_ACT,   TERM_PRIME, FACT,  STAR  },
+		{ MULT_ACT,   TERM_PRIME, FACT,  MULT  },
 		{ NUM,        EMPTY,      EMPTY, EMPTY },
 		{ RP,         EXPR,       LP,    EMPTY },
 		{ EMPTY,      EMPTY,      EMPTY, EMPTY }
@@ -145,21 +145,17 @@ int LL_parser()
 					stack_push(parse_stack, elem);
 			}
 		}
-		// Match
+		else if (top_elem == token.type)
+		{
+			if (top_elem == NUM)
+				stack_push(value_stack, token.value);
+
+			stack_pop(parse_stack);
+			token = get_next_token();
+		}
 		else
 		{
-			if (top_elem == token.type)
-			{
-				if (top_elem == NUM)
-					stack_push(value_stack, token.value);
-
-				stack_pop(parse_stack);
-				token = get_next_token();
-			}
-			else
-			{
-				error();
-			}
+			error();
 		}
 	}
 

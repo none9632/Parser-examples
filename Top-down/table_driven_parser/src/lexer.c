@@ -56,7 +56,7 @@ Token get_next_token()
 			token.type = PLUS;
 			break;
 		case '*':
-			token.type = STAR;
+			token.type = MULT;
 			break;
 		case '\0':
 			token.type = EOI;
