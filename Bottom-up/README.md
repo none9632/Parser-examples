@@ -8,11 +8,11 @@ is very similar, the only difference is in `parse_table`.
 `graph.drawio` - goto-graph(*maybe it's called something else*), opens with [drawio](https://app.diagrams.net)
 
 ## Build and run
-    make
-    ./SLR_parser <expression>
+    $ make
+    $ ./SLR_parser <expression>
     
 ## Testing
-    make test (or ./test.sh)
+    $ make test (or ./test.sh)
 
 ## Grammar
     E -> E + T      (0)

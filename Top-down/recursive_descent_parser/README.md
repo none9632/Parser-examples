@@ -3,11 +3,11 @@
 This is an simple example of a recursive-descent parser.
 
 ## Build and run
-    make
-    ./LL_parser <expression>
+    $ make
+    $ ./LL_parser <expression>
 
 ## Testing
-    make test (or ./test.sh)
+    $ make test (or ./test.sh)
 
 ## Grammar
     E -> T { (+|-) T }
