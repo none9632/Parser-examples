@@ -4,9 +4,9 @@
 #include "../include/lexer.h"
 #include "../include/parser.h"
 
-void usage()
+static void usage()
 {
-	printf("Usage: ./SLR_parser <expression>\n");
+	printf("Usage: ./LALR_parser <expression>\n");
 	exit(EXIT_FAILURE);
 }
 

@@ -24,7 +24,7 @@ enum
 	MULT_ACT,
 };
 
-static Token token;
+static Token  token;
 static Stack *parse_stack;
 static Stack *value_stack;
 
@@ -95,11 +95,12 @@ static int nonterminal_to_index(int nonterminal)
 
 int LL_parser()
 {
+	token       = get_next_token();
 	parse_stack = new_stack();
 	value_stack = new_stack();
+
 	stack_push(parse_stack, EXPR);
 
-	token = get_next_token();
 
 	while (parse_stack->length > 0)
 	{
@@ -120,7 +121,7 @@ int LL_parser()
 					value1 = value1 * value2;
 					break;
 				default:
-					error();
+					error("unknown action");
 					break;
 			}
 
@@ -134,7 +135,7 @@ int LL_parser()
 			int index = parse_table[nonterminal_to_index(top_elem)][token.type];
 
 			if (index == EMPTY)
-				error();
+				error("syntax error");
 
 			stack_pop(parse_stack);
 
@@ -154,9 +155,7 @@ int LL_parser()
 			token = get_next_token();
 		}
 		else
-		{
-			error();
-		}
+			error("syntax error");
 	}
 
 	return stack_top(value_stack);

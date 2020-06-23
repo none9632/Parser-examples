@@ -22,8 +22,8 @@ typedef struct token
 }
 Token;
 
-Token get_next_token();
-void init_lexer(char *input_str);
-void error();
+Token get_next_token ();
+void  init_lexer     (char *input_str);
+void  error          (char *message);
 
 #endif

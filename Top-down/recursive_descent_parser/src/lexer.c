@@ -2,16 +2,17 @@
 
 static char *input_str;
 
-void error()
+void error(char *message)
 {
-	printf("ERROR\n");
+	printf("error: %s\n", message);
 	exit(EXIT_FAILURE);
 }
 
 static Token get_num_token()
 {
 	Token token;
-	token.type = NUMBER;
+
+	token.type  = NUM;
 	token.value = 0;
 	input_str--;
 
@@ -59,16 +60,16 @@ Token get_next_token()
 			token.type = MINUS;
 			break;
 		case '*':
-			token.type = MULT;
+			token.type = ASTERISK;
 			break;
 		case '/':
-			token.type = DIVISION;
+			token.type = SLASH;
 			break;
 		case '\0':
 			token.type = EOI;
 			break;
 		default:
-			error();
+			error("unknown character");
 			break;
 	}
 

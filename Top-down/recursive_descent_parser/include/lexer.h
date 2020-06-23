@@ -7,11 +7,11 @@
 
 enum
 {
-	NUMBER,     // Number literal
+	NUM,        // Number literal
 	PLUS,       // '+'
 	MINUS,      // '-'
-	MULT,       // '*'
-	DIVISION,   // '/'
+	ASTERISK,   // '*'
+	SLASH,      // '/'
 	LP,         // '('
 	RP,         // ')'
 	EOI         // End of input
@@ -24,8 +24,8 @@ typedef struct token
 }
 Token;
 
-Token get_next_token();
-void init_lexer(char *input_str);
-void error();
+Token get_next_token ();
+void  init_lexer     (char *input_str);
+void  error          (char *message);
 
 #endif

@@ -19,6 +19,5 @@ int main(int argc, char **argv)
 
 	init_lexer(argv[1]);
 	result = LL_parser();
-
 	printf("%i\n", result);
 }

@@ -3,10 +3,10 @@
 #define EMPTY -1
 #define EMPTY_ELEM EMPTY, EMPTY
 
-#define COLUMNS_PARSE_TABLE 11
-#define LINE_PARSE_TABLE 30
+#define COLUMNS_PARSE_TABLE      11
+#define LINE_PARSE_TABLE         30
 #define COLUMNS_PRODUCTION_TABLE 4
-#define LINE_PRODUCTION_TABLE 8
+#define LINE_PRODUCTION_TABLE    8
 
 // Non-terminals
 enum
@@ -32,7 +32,7 @@ typedef struct elem_parse_table
 }
 Elem;
 
-static Token token;
+static Token  token;
 static Stack *parse_stack;
 static Stack *value_stack;
 
@@ -174,7 +174,7 @@ static int production_table[LINE_PRODUCTION_TABLE][COLUMNS_PRODUCTION_TABLE] =
 
 int LR_parser()
 {
-	token = get_next_token();
+	token       = get_next_token();
 	value_stack = new_stack();
 	parse_stack = new_stack();
 
@@ -182,8 +182,8 @@ int LR_parser()
 
 	while (1)
 	{
-		int state = stack_top(parse_stack);
-		Elem *elem = &parse_table[state][token.type];
+		int   state = stack_top(parse_stack);
+		Elem *elem  = &parse_table[state][token.type];
 
 		if (elem->action == SHIFT)
 		{
@@ -205,7 +205,7 @@ int LR_parser()
 			if (elem->number == 0 ||
 			    elem->number == 1 ||
 			    elem->number == 3 ||
-			    elem->number == 4)
+			    elem->number == 4 )
 			{
 				int value1 = stack_pop(value_stack);
 				int value2 = stack_pop(value_stack);
@@ -227,13 +227,9 @@ int LR_parser()
 			stack_push(parse_stack, parse_table[state][heading].number);
 		}
 		else if (elem->action == ACCEPT)
-		{
 			break;
-		}
 		else
-		{
-			error();
-		}
+			error("syntax error");
 	}
 
 	return stack_pop(value_stack);

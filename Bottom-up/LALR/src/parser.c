@@ -47,7 +47,7 @@ typedef struct elem_parse_table
 }
 Elem;
 
-static Token token;
+static Token  token;
 static Stack *parse_stack;
 static Stack *value_stack;
 
@@ -147,7 +147,7 @@ static int production_table[LINE_PRODUCTION_TABLE][COLUMNS_PRODUCTION_TABLE] =
 
 int LALR_parser()
 {
-	token = get_next_token();
+	token       = get_next_token();
 	value_stack = new_stack();
 	parse_stack = new_stack();
 
@@ -155,8 +155,8 @@ int LALR_parser()
 
 	while (1)
 	{
-		int state = stack_top(parse_stack);
-		Elem *elem = &parse_table[state][token.type];
+		int   state = stack_top(parse_stack);
+		Elem *elem  = &parse_table[state][token.type];
 
 		if (elem->action == SHIFT)
 		{
@@ -178,7 +178,7 @@ int LALR_parser()
 			if (elem->number == 0 ||
 			    elem->number == 1 ||
 			    elem->number == 3 ||
-			    elem->number == 4)
+			    elem->number == 4 )
 			{
 				int value1 = stack_pop(value_stack);
 				int value2 = stack_pop(value_stack);
@@ -200,13 +200,9 @@ int LALR_parser()
 			stack_push(parse_stack, parse_table[state][heading].number);
 		}
 		else if (elem->action == ACCEPT)
-		{
 			break;
-		}
 		else
-		{
-			error();
-		}
+			error("syntax error");
 	}
 
 	return stack_pop(value_stack);

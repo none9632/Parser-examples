@@ -7,7 +7,7 @@ static int expr();
 static void match_token(int type)
 {
 	if (token.type != type)
-		error();
+		error("syntax error");
 	token = get_next_token();
 }
 
@@ -17,7 +17,7 @@ static int fact()
 
 	switch (token.type)
 	{
-		case NUMBER:
+		case NUM:
 			result = token.value;
 			token = get_next_token();
 			break;
@@ -29,7 +29,7 @@ static int fact()
 			break;
 
 		default:
-			error();
+			error("syntax error");
 			break;
 	}
 
@@ -42,7 +42,7 @@ static int term()
 	int buf_result;
 	int saved_char;
 
-	while (token.type == MULT || token.type == DIVISION)
+	while (token.type == ASTERISK || token.type == SLASH)
 	{
 		saved_char = token.type;
 		token = get_next_token();
@@ -50,8 +50,8 @@ static int term()
 
 		switch (saved_char)
 		{
-			case MULT:     result *= buf_result; break;
-			case DIVISION: result /= buf_result; break;
+			case ASTERISK: result *= buf_result; break;
+			case SLASH:    result /= buf_result; break;
 		}
 	}
 
@@ -86,7 +86,7 @@ int LL_parser()
 	int result = expr();
 
 	if (token.type != EOI)
-		error();
+		error("syntax error");
 
 	return result;
 }

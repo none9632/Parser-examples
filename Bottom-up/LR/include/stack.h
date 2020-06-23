@@ -4,6 +4,8 @@
 #include <malloc.h>
 #include <stddef.h>
 
+#include "lexer.h"
+
 typedef struct stack
 {
 	int *data;
@@ -12,9 +14,9 @@ typedef struct stack
 }
 Stack;
 
-Stack *new_stack(void);
-void stack_push(Stack *v, int elem);
-int stack_pop(Stack *v);
-int stack_top(Stack *v);
+Stack *new_stack  ();
+void   stack_push (Stack *v, int elem);
+int    stack_pop  (Stack *v);
+int    stack_top  (Stack *v);
 
 #endif
