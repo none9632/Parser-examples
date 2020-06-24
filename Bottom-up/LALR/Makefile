@@ -1,6 +1,6 @@
 TARGET := LALR_parser
 
-CC := gcc
+CC     := gcc
 CCFLAG := -Wall -g
 
 OBJ_PATH := obj
@@ -11,6 +11,8 @@ vpath %.o $(OBJ_PATH)
 
 SRC_FILES := $(wildcard $(SRC_PATH)/*.c)
 OBJ_FILES := $(subst $(SRC_PATH),$(OBJ_PATH),$(SRC_FILES:.c=.o))
+
+.PHONY: test rebuild clean
 
 $(TARGET): $(notdir $(OBJ_FILES))
 	$(CC) $(CCFLAG) $(OBJ_FILES) -o $(TARGET)
