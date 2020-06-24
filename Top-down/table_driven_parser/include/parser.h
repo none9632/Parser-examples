@@ -5,8 +5,10 @@
 #include <stdio.h>
 
 #include "lexer.h"
+#include "error.h"
+#include "node.h"
 #include "stack.h"
 
-int LL_parser();
+Node *LL_parser();
 
 #endif

@@ -2,12 +2,6 @@
 
 static char *input_str;
 
-void error(char *message)
-{
-	printf("error: %s\n", message);
-	exit(EXIT_FAILURE);
-}
-
 static Token get_num_token()
 {
 	Token token;

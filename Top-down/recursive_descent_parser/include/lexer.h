@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+#include "error.h"
+
 enum
 {
 	NUM,        // Number literal
@@ -26,6 +28,5 @@ Token;
 
 Token get_next_token ();
 void  init_lexer     (char *input_str);
-void  error          (char *message);
 
 #endif

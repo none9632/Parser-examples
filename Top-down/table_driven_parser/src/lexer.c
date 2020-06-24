@@ -2,12 +2,6 @@
 
 static char *input_str;
 
-void error(char *message)
-{
-	printf("error: %s\n", message);
-	exit(EXIT_FAILURE);
-}
-
 static Token get_num_token()
 {
 	Token token;
@@ -57,7 +51,7 @@ Token get_next_token()
 			token.type = PLUS;
 			break;
 		case '*':
-			token.type = MULT;
+			token.type = ASTERISK;
 			break;
 		case '\0':
 			token.type = EOI;

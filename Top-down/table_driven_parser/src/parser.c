@@ -77,14 +77,14 @@ static int parse_table[LINE_PARSE_TABLE][COLUMNS_PARSE_TABLE] =
  */
 static int production_table[LINE_PRODUCTION_TABLE][COLUMNS_PRODUCTION_TABLE] =
 {
-		{ EXPR,       EMPTY,      EMPTY, EMPTY },
-		{ EXPR_PRIME, TERM,       EMPTY, EMPTY },
-		{ PLUS_ATC,   EXPR_PRIME, TERM,  PLUS  },
-		{ TERM_PRIME, FACT,       EMPTY, EMPTY },
-		{ MULT_ACT,   TERM_PRIME, FACT,  MULT  },
-		{ NUM,        EMPTY,      EMPTY, EMPTY },
-		{ RP,         EXPR,       LP,    EMPTY },
-		{ EMPTY,      EMPTY,      EMPTY, EMPTY }
+		{ EXPR,       EMPTY,      EMPTY, EMPTY    },
+		{ EXPR_PRIME, TERM,       EMPTY, EMPTY    },
+		{ PLUS_ATC,   EXPR_PRIME, TERM,  PLUS     },
+		{ TERM_PRIME, FACT,       EMPTY, EMPTY    },
+		{ MULT_ACT,   TERM_PRIME, FACT,  ASTERISK },
+		{ NUM,        EMPTY,      EMPTY, EMPTY    },
+		{ RP,         EXPR,       LP,    EMPTY    },
+		{ EMPTY,      EMPTY,      EMPTY, EMPTY    }
 };
 
 // Getting index from non terminal
@@ -93,14 +93,13 @@ static int nonterminal_to_index(int nonterminal)
 	return nonterminal - EXPR;
 }
 
-int LL_parser()
+Node *LL_parser()
 {
 	token       = get_next_token();
 	parse_stack = new_stack();
 	value_stack = new_stack();
 
 	stack_push(parse_stack, EXPR);
-
 
 	while (parse_stack->length > 0)
 	{

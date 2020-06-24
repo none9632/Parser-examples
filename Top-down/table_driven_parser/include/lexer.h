@@ -5,11 +5,13 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+#include "error.h"
+
 enum
 {
 	NUM,        // Number literal
 	PLUS,       // '+'
-	MULT,       // '*'
+	ASTERISK,   // '*'
 	LP,         // '('
 	RP,         // ')'
 	EOI,        // End of input
@@ -24,6 +26,5 @@ Token;
 
 Token get_next_token ();
 void  init_lexer     (char *input_str);
-void  error          (char *message);
 
 #endif

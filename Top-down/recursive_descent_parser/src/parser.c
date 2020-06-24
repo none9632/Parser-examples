@@ -2,7 +2,7 @@
 
 static Token token;
 
-static int expr();
+static Node *expr();
 
 static void match_token(int type)
 {
@@ -11,20 +11,21 @@ static void match_token(int type)
 	token = get_next_token();
 }
 
-static int fact()
+static Node *fact()
 {
-	int result = 0;
+	Node *node = new_node();
 
 	switch (token.type)
 	{
 		case NUM:
-			result = token.value;
-			token = get_next_token();
+			node->kind  = K_NUM;
+			node->value = token.value;
+			token       = get_next_token();
 			break;
 
 		case LP:
 			match_token(LP);
-			result = expr();
+			node = expr();
 			match_token(RP);
 			break;
 
@@ -33,60 +34,69 @@ static int fact()
 			break;
 	}
 
-	return result;
+	return node;
 }
 
-static int term()
+static Node *term()
 {
-	int result = fact();
-	int buf_result;
-	int saved_char;
+	Node *node = fact();
+	int buf_char;
 
 	while (token.type == ASTERISK || token.type == SLASH)
 	{
-		saved_char = token.type;
-		token = get_next_token();
-		buf_result = fact();
+		Node *buf_node = new_node();
 
-		switch (saved_char)
+		buf_char = token.type;
+		token    = get_next_token();
+
+		buf_node->lhs = node;
+		buf_node->rhs = fact();
+		node          = buf_node;
+
+		switch (buf_char)
 		{
-			case ASTERISK: result *= buf_result; break;
-			case SLASH:    result /= buf_result; break;
+			case ASTERISK: node->kind = K_MULT; break;
+			case SLASH:    node->kind = K_DIV;  break;
 		}
 	}
 
-	return result;
+	return node;
 }
 
-static int expr()
+static Node *expr()
 {
-	int result = term();
-	int buf_result;
-	int saved_char;
+	Node *node = term();
+	int buf_char;
 
 	while (token.type == PLUS || token.type == MINUS)
 	{
-		saved_char = token.type;
-		token = get_next_token();
-		buf_result = term();
+		Node *buf_node = new_node();
 
-		switch (saved_char)
+		buf_char = token.type;
+		token    = get_next_token();
+
+		buf_node->lhs = node;
+		buf_node->rhs = term();
+		node          = buf_node;
+
+		switch (buf_char)
 		{
-			case PLUS:  result += buf_result; break;
-			case MINUS: result -= buf_result; break;
+			case PLUS:  node->kind = K_ADD; break;
+			case MINUS: node->kind = K_SUB; break;
 		}
 	}
 
-	return result;
+	return node;
 }
 
-int LL_parser()
+Node *LL_parser()
 {
 	token = get_next_token();
-	int result = expr();
+
+	Node *node = expr();
 
 	if (token.type != EOI)
 		error("syntax error");
 
-	return result;
+	return node;
 }
