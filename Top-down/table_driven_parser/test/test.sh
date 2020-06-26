@@ -33,17 +33,20 @@ if [ -e $program_path ]
 then
     test "0" output/test1
     test "1+1" output/test2
-    test "1+(2*3)" output/test3
+    test "1-(2*3)" output/test3
     test "2*3+4" output/test4
-    test "2*3+4*5" output/test5
-    test "(2+3)*(4+5)" output/test6
-    test "1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17" output/test7
-    test "12*(32)" output/test8
-    test "12 * (   32   )" output/test9
-    test "12(32)" output/test10
-    test "5++" output/test11
-    test "()234" output/test12
-    test "word" output/test13
+    test "2*3-4*5" output/test5
+    test "50/10" output/test6
+    test "6*3/2" output/test7
+    test "(2+3)*(4+5)" output/test8
+    test "1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17" output/test9
+    test "12*(32)" output/test10
+    test "12 * (   32   )" output/test11
+    test "12(32)" output/test12
+    test "5++" output/test13
+    test "532/" output/test14
+    test "()234" output/test15
+    test "word" output/test16
 else
     results=1
     echo ""

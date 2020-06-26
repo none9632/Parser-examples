@@ -41,17 +41,23 @@ Token get_next_token()
 		case '9':
 			token = get_num_token();
 			break;
+		case '+':
+			token.type = PLUS;
+			break;
+		case '-':
+			token.type = MINUS;
+			break;
+		case '*':
+			token.type = ASTERISK;
+			break;
+		case '/':
+			token.type = SLASH;
+			break;
 		case '(':
 			token.type = LP;
 			break;
 		case ')':
 			token.type = RP;
-			break;
-		case '+':
-			token.type = PLUS;
-			break;
-		case '*':
-			token.type = ASTERISK;
 			break;
 		case '\0':
 			token.type = EOI;

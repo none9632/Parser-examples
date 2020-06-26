@@ -33,9 +33,9 @@ if [ -e $program_path ]
 then
     test "0" output/test1
     test "1+1" output/test2
-    test "1+(2*3)" output/test3
+    test "1-(2*3)" output/test3
     test "2*3+4" output/test4
-    test "2*3+4*5" output/test5
+    test "2*3-4*5" output/test5
     test "50/10" output/test6
     test "6*3/2" output/test7
     test "(2+3)*(4+5)" output/test8

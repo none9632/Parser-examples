@@ -164,11 +164,11 @@ static int production_table[LINE_PRODUCTION_TABLE][COLUMNS_PRODUCTION_TABLE] =
 {
 		{ EXPR, EXPR, PLUS,     TERM  },
 		{ EXPR, EXPR, MINUS,    TERM  },
-		{ EXPR, TERM, EMPTY, EMPTY },
+		{ EXPR, TERM, EMPTY,    EMPTY },
 		{ TERM, TERM, ASTERISK, FACT  },
 		{ TERM, TERM, SLASH,    FACT  },
-		{ TERM, FACT, EMPTY, EMPTY },
-		{ FACT, NUM,  EMPTY, EMPTY },
+		{ TERM, FACT, EMPTY,    EMPTY },
+		{ FACT, NUM,  EMPTY,    EMPTY },
 		{ FACT, LP,   EXPR,     RP    }
 };
 

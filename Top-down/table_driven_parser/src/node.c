@@ -21,7 +21,9 @@ static void print_kind(int kind, int value)
 	{
 		case NUM:        printf("%i\n", value); break;
 		case PLUS:       printf("+\n");         break;
+		case MINUS:      printf("-\n");         break;
 		case ASTERISK:   printf("*\n");         break;
+		case SLASH:      printf("\\\n");        break;
 		case LP:         printf("(\n");         break;
 		case RP:         printf(")\n");         break;
 		case EXPR:       printf("E\n");         break;

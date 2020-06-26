@@ -12,7 +12,9 @@ enum
 {
 	NUM,        // Number literal
 	PLUS,       // '+'
+	MINUS,      // '-'
 	ASTERISK,   // '*'
+	SLASH,      // '/'
 	LP,         // '('
 	RP,         // ')'
 	EOI         // End of input
