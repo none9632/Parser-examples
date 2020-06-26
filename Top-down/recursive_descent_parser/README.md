@@ -7,7 +7,7 @@ This is an simple example of a recursive-descent parser.
     $ ./LL_parser <expression>
 
 ## Testing
-    $ make test (or ./test.sh)
+    $ make test
 
 ## Grammar
     E -> T { (+|-) T }

@@ -14,7 +14,7 @@ function test
     dif=$(echo "$(date +%s.%N) - $start" | bc)
     right_output=$(cat $2)
 
-     printf " %.4fs |" $dif
+    printf " %.4fs |" $dif
 
     if [ "$output" = "$right_output" ]
     then

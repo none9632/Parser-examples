@@ -4,28 +4,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "lexer.h"
 #include "error.h"
-
-enum
-{
-	K_ADD,
-	K_SUB,
-	K_MULT,
-	K_DIV,
-	K_NUM,
-	K_NONE
-};
 
 typedef struct node
 {
 	int kind;
 	int value;
-	struct node *lhs;
-	struct node *rhs;
+	struct node *n[3];
 }
 Node;
 
-Node *new_node         ();
+Node *new_node         (int kind);
 void  start_print_node (Node *n);
 
 #endif

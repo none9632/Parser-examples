@@ -1,18 +1,16 @@
 #include "../include/node.h"
 
-char *prefix;
+char *prefix = NULL;
 
-Node* new_node()
+Node* new_node(int kind)
 {
 	Node *n = malloc(sizeof(Node));
 
 	if (n == NULL)
 		error("memory allocation error in new_node()");
 
-	n->kind  = K_NONE;
+	n->kind  = kind;
 	n->value = 0;
-	n->lhs   = NULL;
-	n->rhs   = NULL;
 
 	return n;
 }
@@ -21,10 +19,17 @@ static void print_kind(int kind, int value)
 {
 	switch (kind)
 	{
-		case K_ADD:  printf("+\n");         break;
-		case K_SUB:  printf("-\n");         break;
-		case K_NUM:  printf("%i\n", value); break;
-		case K_NONE: printf("none\n");      break;
+		case NUM:        printf("%i\n", value); break;
+		case PLUS:       printf("+\n");         break;
+		case ASTERISK:   printf("*\n");         break;
+		case LP:         printf("(\n");         break;
+		case RP:         printf(")\n");         break;
+		case EXPR:       printf("E\n");         break;
+		case EXPR_PRIME: printf("E'\n");        break;
+		case TERM:       printf("T\n");         break;
+		case TERM_PRIME: printf("T'\n");        break;
+		case FACT:       printf("F\n");         break;
+		case EPSILON:    printf("epsilon\n");   break;
 	}
 }
 
@@ -70,8 +75,9 @@ void print_node(Node *n, int prefix_len, int is_left)
 		new_prefix(prefix_len, is_left);
 		prefix_len += 4;
 
-		print_node(n->lhs, prefix_len, 1);
-		print_node(n->rhs, prefix_len, 0);
+		print_node(n->n[2], prefix_len, 1);
+		print_node(n->n[1], prefix_len, 1);
+		print_node(n->n[0], prefix_len, 0);
 	}
 }
 
@@ -81,6 +87,7 @@ void start_print_node(Node *n)
 
 	print_kind(n->kind, n->value);
 
-	print_node(n->lhs, 0, 1);
-	print_node(n->rhs, 0, 0);
+	print_node(n->n[2], 0, 1);
+	print_node(n->n[1], 0, 1);
+	print_node(n->n[0], 0, 0);
 }

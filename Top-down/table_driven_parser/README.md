@@ -7,47 +7,42 @@ This is an simple example of a table-driven LL(1) parser.
     $ ./LL_parser <expression>
     
 ## Testing
-    $ make test (or ./test.sh)
+    $ make test
 
 ## Grammar
-    E -> TE'
-    E' -> +TE' | (epsilon)
-    T -> FT'
-    T' -> *FT' | (epsilon)
-    F -> NUM | (E)
+    E  -> TE'
+    E' -> +TE' | -TE' | (epsilon)
+    T  -> FT'
+    T' -> *FT' | /FT' | (epsilon)
+    F  -> NUM | (E)
 
 ## Example
 
 Here is an example parse of the string `1+2*3`:
 
-Parse stack | Value stack | Input | Parser action
-------------|-------------|-------|--------------
-E | NULL | 1+2*3$ | Predict E->TE'
-E'T | NULL | 1+2*3$ | Predict T->FT'
-E'T'F | NULL | 1+2*3$ | Predict F->NUM
-E'T'NUM | NULL | 1+2*3$ | Match NUM
-E'T' | 1 | +2*3$ | Predict T->e
-E' | 1 | +2*3$ | Predict E'->+TE'
-(PLUS_ACT)E'T+ | 1 | +2*3$ | Match +
-(PLUS_ACT)E'T | 1 | 2*3$ | Predict T->FT'
-(PLUS_ACT)E'T'F | 1 | 2*3$ | Predict F->NUM
-(PLUS_ACT)E'T'NUM | 1 | 2*3$ | Match NUM
-(PLUS_ACT)E'T' | 1 2 | *3$ | Predict T'->*FT'
-(PLUS_ACT)E'(MULT_ACT)T'F* | 1 2 | *3$ | Match *
-(PLUS_ACT)E'(MULT_ACT)T'F | 1 2 | 3$ | Predict F->NUM
-(PLUS_ACT)E'(MULT_ACT)T'NUM | 1 2 | 3$ | Match NUM
-(PLUS_ACT)E'(MULT_ACT)T' | 1 2 3 | $ | Predict T'->e
-(PLUS_ACT)E'(MULT_ACT) | 1 2 3 | $ | Perform action MULT_ACT
-(PLUS_ACT)E' | 1 6 | $ | Predict E'->e
-(PLUS_ACT) | 1 6 | $ | Perform action PLUS_ACT
-| NULL | 7 | $ | Success, output top value stack
+Parse stack                 | Value stack | Input  | Parser action
+----------------------------|-------------|--------|--------------
+E                           | NULL        | 1+2*3$ | Predict E->TE'
+E'T                         | NULL        | 1+2*3$ | Predict T->FT'
+E'T'F                       | NULL        | 1+2*3$ | Predict F->NUM
+E'T'NUM                     | NULL        | 1+2*3$ | Match NUM
+E'T'                        | 1           | +2*3$  | Predict T->e
+E'                          | 1           | +2*3$  | Predict E'->+TE'
+(PLUS_ACT)E'T+              | 1           | +2*3$  | Match +
+(PLUS_ACT)E'T               | 1           | 2*3$   | Predict T->FT'
+(PLUS_ACT)E'T'F             | 1           | 2*3$   | Predict F->NUM
+(PLUS_ACT)E'T'NUM           | 1           | 2*3$   | Match NUM
+(PLUS_ACT)E'T'              | 1 2         | *3$    | Predict T'->*FT'
+(PLUS_ACT)E'(MULT_ACT)T'F*  | 1 2         | *3$    | Match *
+(PLUS_ACT)E'(MULT_ACT)T'F   | 1 2         | 3$     | Predict F->NUM
+(PLUS_ACT)E'(MULT_ACT)T'NUM | 1 2         | 3$     | Match NUM
+(PLUS_ACT)E'(MULT_ACT)T'    | 1 2 3       | $      | Predict T'->e
+(PLUS_ACT)E'(MULT_ACT)      | 1 2 3       | $      | Perform action MULT_ACT
+(PLUS_ACT)E'                | 1 6         | $      | Predict E'->e
+(PLUS_ACT)                  | 1 6         | $      | Perform action PLUS_ACT
+NULL                        | 7           | $      | Success, output top value stack
 
 ### Annotation
-
-##### Perform action
-* pop two values from `value_stack`
-* push result of the perform action in `value_stack`
-* pop top value from `parse_stack`
 
 ##### Predict
 * getting index from `parser_table`

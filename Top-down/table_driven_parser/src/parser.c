@@ -4,29 +4,18 @@
 
 #define COLUMNS_PARSE_TABLE 6
 #define LINE_PARSE_TABLE 5
-#define COLUMNS_PRODUCTION_TABLE 4
+#define COLUMNS_PRODUCTION_TABLE 3
 #define LINE_PRODUCTION_TABLE 8
 
-// Non-terminals
-enum
+typedef struct element_parse_stack
 {
-	EXPR = 10,
-	EXPR_PRIME,
-	TERM,
-	TERM_PRIME,
-	FACT
-};
-
-// Actions
-enum
-{
-	PLUS_ATC = 20,
-	MULT_ACT,
-};
+	int state;
+	Node *node;
+}
+Elem_PS;
 
 static Token  token;
 static Stack *parse_stack;
-static Stack *value_stack;
 
 /*
  * Parse table
@@ -50,42 +39,55 @@ static int parse_table[LINE_PARSE_TABLE][COLUMNS_PARSE_TABLE] =
 		{ EMPTY, 2,     EMPTY, EMPTY, 7,     7     },
 		{ 3,     EMPTY, EMPTY, 3,     EMPTY, EMPTY },
 		{ EMPTY, 7,     4,     EMPTY, 7,     7     },
-		{ 5,     EMPTY, EMPTY, 6,     EMPTY, EMPTY },
+		{ 5,     EMPTY, EMPTY, 6,     EMPTY, EMPTY }
 };
 
 /*
  * Production table
- * |---------------------------------------------------|
- * |   | Element 1 | Element 2 | Element 3 | Element 4 |
- * |---------------------------------------------------|
- * | 0 |     E     |           |           |           |
- * |---------------------------------------------------|
- * | 1 |     E'    |     T     |           |           |
- * |---------------------------------------------------|
- * | 2 | PLUS_ACT  |     E'    |     T     |     +     |
- * |---------------------------------------------------|
- * | 3 |     T'    |     F     |           |           |
- * |---------------------------------------------------|
- * | 4 | MULT_ACT  |     T'    |     F     |     *     |
- * |---------------------------------------------------|
- * | 5 |    NUM    |           |           |           |
- * |---------------------------------------------------|
- * | 6 |     )     |     E     |     (     |           |
- * |---------------------------------------------------|
- * | 7 |           |           |           |           |
- * |---------------------------------------------------|
+ * |---------------------------------------|
+ * |   | Element 1 | Element 2 | Element 3 |
+ * |---------------------------------------|
+ * | 0 |     E     |           |           |
+ * |---------------------------------------|
+ * | 1 |     E'    |     T     |           |
+ * |---------------------------------------|
+ * | 2 |     E'    |     T     |     +     |
+ * |---------------------------------------|
+ * | 3 |     T'    |     F     |           |
+ * |---------------------------------------|
+ * | 4 |     T'    |     F     |     *     |
+ * |---------------------------------------|
+ * | 5 |    NUM    |           |           |
+ * |---------------------------------------|
+ * | 6 |     )     |     E     |     (     |
+ * |---------------------------------------|
+ * | 7 |     e     |           |           |
+ * |---------------------------------------|
  */
 static int production_table[LINE_PRODUCTION_TABLE][COLUMNS_PRODUCTION_TABLE] =
 {
-		{ EXPR,       EMPTY,      EMPTY, EMPTY    },
-		{ EXPR_PRIME, TERM,       EMPTY, EMPTY    },
-		{ PLUS_ATC,   EXPR_PRIME, TERM,  PLUS     },
-		{ TERM_PRIME, FACT,       EMPTY, EMPTY    },
-		{ MULT_ACT,   TERM_PRIME, FACT,  ASTERISK },
-		{ NUM,        EMPTY,      EMPTY, EMPTY    },
-		{ RP,         EXPR,       LP,    EMPTY    },
-		{ EMPTY,      EMPTY,      EMPTY, EMPTY    }
+		{ EXPR,       EMPTY, EMPTY    },
+		{ EXPR_PRIME, TERM,  EMPTY    },
+		{ EXPR_PRIME, TERM,  PLUS     },
+		{ TERM_PRIME, FACT,  EMPTY    },
+		{ TERM_PRIME, FACT,  ASTERISK },
+		{ NUM,        EMPTY, EMPTY    },
+		{ RP,         EXPR,  LP,      },
+		{ EPSILON,    EMPTY, EMPTY    }
 };
+
+static Elem_PS *new_elem_PT(int state, Node *node)
+{
+	Elem_PS *elem_PT = malloc(sizeof(Elem_PS));
+
+	if (elem_PT == NULL)
+		error("memory allocation error in new_elem_PT()");
+
+	elem_PT->state = state;
+	elem_PT->node  = node;
+
+	return elem_PT;
+}
 
 // Getting index from non terminal
 static int nonterminal_to_index(int nonterminal)
@@ -93,69 +95,59 @@ static int nonterminal_to_index(int nonterminal)
 	return nonterminal - EXPR;
 }
 
+static void predict(Elem_PS *top_elem)
+{
+	// getting index from parser_table
+	int index = parse_table[nonterminal_to_index(top_elem->state)][token.type];
+
+	if (index == EMPTY)
+		error("syntax error");
+
+	stack_pop(parse_stack);
+
+	for (int i = 0; i < COLUMNS_PRODUCTION_TABLE; i++)
+	{
+		int elem = production_table[index][i];
+
+		if (elem != EMPTY)
+		{
+			top_elem->node->n[i] = new_node(elem);
+			if (elem != EPSILON)
+				stack_push(parse_stack, new_elem_PT(elem, top_elem->node->n[i]));
+		}
+	}
+}
+
+static void match(Elem_PS *top_elem)
+{
+	if (top_elem->state == NUM)
+		top_elem->node->value = token.value;
+
+	stack_pop(parse_stack);
+	token = get_next_token();
+}
+
 Node *LL_parser()
 {
+	Node *tree;
+
+	tree        = new_node(EXPR);
 	token       = get_next_token();
 	parse_stack = new_stack();
-	value_stack = new_stack();
 
-	stack_push(parse_stack, EXPR);
+	stack_push(parse_stack, new_elem_PT(EXPR, tree));
 
 	while (parse_stack->length > 0)
 	{
-		int top_elem = stack_top(parse_stack);
+		Elem_PS *top_elem = stack_top(parse_stack);
 
-		// Perform action
-		if (top_elem >= PLUS_ATC)
-		{
-			int value1 = stack_pop(value_stack);
-			int value2 = stack_pop(value_stack);
-
-			switch (top_elem)
-			{
-				case PLUS_ATC:
-					value1 = value1 + value2;
-					break;
-				case MULT_ACT:
-					value1 = value1 * value2;
-					break;
-				default:
-					error("unknown action");
-					break;
-			}
-
-			stack_push(value_stack, value1);
-			stack_pop(parse_stack);
-		}
-		// Predict
-		else if (top_elem >= EXPR)
-		{
-			// getting index from parser_table
-			int index = parse_table[nonterminal_to_index(top_elem)][token.type];
-
-			if (index == EMPTY)
-				error("syntax error");
-
-			stack_pop(parse_stack);
-
-			for (int i = 0; i < COLUMNS_PRODUCTION_TABLE; i++)
-			{
-				int elem = production_table[index][i];
-				if (elem != EMPTY)
-					stack_push(parse_stack, elem);
-			}
-		}
-		else if (top_elem == token.type)
-		{
-			if (top_elem == NUM)
-				stack_push(value_stack, token.value);
-
-			stack_pop(parse_stack);
-			token = get_next_token();
-		}
+		if (top_elem->state >= EXPR)
+			predict(top_elem);
+		else if (top_elem->state == token.type)
+			match(top_elem);
 		else
 			error("syntax error");
 	}
 
-	return stack_top(value_stack);
+	return tree;
 }

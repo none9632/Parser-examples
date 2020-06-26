@@ -17,7 +17,7 @@ Stack *new_stack()
 	return s;
 }
 
-void stack_push(Stack *s, int elem)
+void stack_push(Stack *s, void *elem)
 {
 	if (s->length + 1 >= s->capacity)
 	{
@@ -31,13 +31,13 @@ void stack_push(Stack *s, int elem)
 }
 
 // removes and returns a top value
-int stack_pop(Stack *s)
+void *stack_pop(Stack *s)
 {
 	return s->data[--s->length];
 }
 
 // returns a top value
-int stack_top(Stack *s)
+void *stack_top(Stack *s)
 {
 	return s->data[s->length - 1];
 }

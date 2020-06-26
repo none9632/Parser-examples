@@ -7,6 +7,7 @@
 
 #include "error.h"
 
+// Terminal symbols
 enum
 {
 	NUM,        // Number literal
@@ -14,7 +15,18 @@ enum
 	ASTERISK,   // '*'
 	LP,         // '('
 	RP,         // ')'
-	EOI,        // End of input
+	EOI         // End of input
+};
+
+// Non-terminal symbols
+enum
+{
+	EXPR = 10,
+	EXPR_PRIME,
+	TERM,
+	TERM_PRIME,
+	FACT,
+	EPSILON
 };
 
 typedef struct token
