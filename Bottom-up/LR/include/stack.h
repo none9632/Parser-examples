@@ -4,7 +4,7 @@
 #include <malloc.h>
 #include <stddef.h>
 
-#include "lexer.h"
+#include "error.h"
 
 typedef struct stack
 {

@@ -4,19 +4,19 @@
 #include <malloc.h>
 #include <stddef.h>
 
-#include "lexer.h"
+#include "error.h"
 
 typedef struct stack
 {
-	int *data;
+	void **data;
 	size_t length;
 	size_t capacity;
 }
 Stack;
 
 Stack *new_stack  ();
-void   stack_push (Stack *v, int elem);
-int    stack_pop  (Stack *v);
-int    stack_top  (Stack *v);
+void   stack_push (Stack *v, void *elem);
+void  *stack_pop  (Stack *v);
+void  *stack_top  (Stack *v);
 
 #endif

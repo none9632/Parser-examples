@@ -9,7 +9,7 @@ is very similar, the only difference is in `parse_table`.
 
 ## Build and run
     $ make
-    $ ./SLR_parser(or ./LR_parser or LALR_parser) <expression>
+    $ ./SLR_parser(or ./LR_parser or ./LALR_parser) <expression>
     
 ## Testing
     $ make test

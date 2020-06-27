@@ -12,12 +12,12 @@ Stack *new_stack()
 	s->data     = malloc(sizeof(int) * s->capacity);
 
 	if (s->data == NULL)
-		error("memory allocation error in new_stack()");
+		error("memory allocation error in vector()");
 
 	return s;
 }
 
-void stack_push(Stack *s, int elem)
+void stack_push(Stack *s, void *elem)
 {
 	if (s->length + 1 >= s->capacity)
 	{
@@ -31,13 +31,13 @@ void stack_push(Stack *s, int elem)
 }
 
 // removes and returns a top value
-int stack_pop(Stack *s)
+void *stack_pop(Stack *s)
 {
 	return s->data[--s->length];
 }
 
 // returns a top value
-int stack_top(Stack *s)
+void *stack_top(Stack *s)
 {
 	return s->data[s->length - 1];
 }

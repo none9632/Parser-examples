@@ -8,14 +8,6 @@
 #define COLUMNS_PRODUCTION_TABLE 4
 #define LINE_PRODUCTION_TABLE 8
 
-// Non-terminals
-enum
-{
-	EXPR = 8,
-	TERM,
-	FACT
-};
-
 // Actions
 enum
 {
@@ -30,11 +22,17 @@ typedef struct elem_parse_table
 	int action;
 	int number;
 }
-Elem;
+		Elem_PT;
+
+typedef struct elem_parse_stack
+{
+	int state;
+	Node *node;
+}
+Elem_PS;
 
 static Token  token;
 static Stack *parse_stack;
-static Stack *value_stack;
 
 /*
  * Parse table
@@ -76,7 +74,7 @@ static Stack *value_stack;
  * |  15   |      | R(7) | R(7) | R(7) | R(7) |      | R(7)  |  R(7)  |    |    |    |
  * |---------------------------------------------------------------------------------|
  */
-static Elem parse_table[LINE_PARSE_TABLE][COLUMNS_PARSE_TABLE] =
+static Elem_PT parse_table[LINE_PARSE_TABLE][COLUMNS_PARSE_TABLE] =
 {
 		{ {SHIFT, 4},   {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {SHIFT, 3},   {EMPTY_ELEM}, {EMPTY_ELEM}, {GOTO, 1},    {GOTO, 2},    {GOTO, 5}    },
 		{ {EMPTY_ELEM}, {SHIFT, 6},   {SHIFT, 7},   {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM}, {ACCEPT, 0},  {EMPTY_ELEM}, {EMPTY_ELEM}, {EMPTY_ELEM} },
@@ -122,73 +120,82 @@ static int production_table[LINE_PRODUCTION_TABLE][COLUMNS_PRODUCTION_TABLE] =
 {
 		{ EXPR, EXPR, PLUS,     TERM  },
 		{ EXPR, EXPR, MINUS,    TERM  },
-		{ EXPR, TERM, EMPTY, EMPTY },
+		{ EXPR, TERM, EMPTY,    EMPTY },
 		{ TERM, TERM, ASTERISK, FACT  },
 		{ TERM, TERM, SLASH,    FACT  },
-		{ TERM, FACT, EMPTY, EMPTY },
-		{ FACT, NUM,  EMPTY, EMPTY },
+		{ TERM, FACT, EMPTY,    EMPTY },
+		{ FACT, NUM,  EMPTY,    EMPTY },
 		{ FACT, LP,   EXPR,     RP    }
 };
 
-int SLR_parser()
+static Elem_PS *new_elem_PS(int state, Node *node)
+{
+	Elem_PS *elem_PS = malloc(sizeof(Elem_PS));
+
+	if (elem_PS == NULL)
+		error("memory allocation error in new_elem_PS()");
+
+	elem_PS->state = state;
+	elem_PS->node  = node;
+
+	return elem_PS;
+}
+
+static void shift(int state)
+{
+	Elem_PS *elem_PS = new_elem_PS(state, new_node(token.type));
+
+	if (token.type == NUM)
+		elem_PS->node->value = token.value;
+
+	stack_push(parse_stack, elem_PS);
+
+	token = get_next_token();
+}
+
+static void reduce(int number)
+{
+	Node *node = new_node(production_table[number][0]);
+
+	for (int i = 1; i < COLUMNS_PRODUCTION_TABLE; ++i)
+	{
+		if (production_table[number][i] != EMPTY)
+		{
+			Elem_PS *elem_PS = stack_pop(parse_stack);
+			node->n[i - 1] = elem_PS->node;
+		}
+	}
+
+	Elem_PS *elem_PS = stack_top(parse_stack);
+	int      heading = production_table[number][0];
+	int      state   = parse_table[elem_PS->state][heading].number;
+
+	stack_push(parse_stack, new_elem_PS(state, node));
+}
+
+Node *SLR_parser()
 {
 	token       = get_next_token();
-	value_stack = new_stack();
 	parse_stack = new_stack();
 
-	stack_push(parse_stack, 0);  // push state 0 into the stack
+	stack_push(parse_stack, new_elem_PS(0, NULL));  // push state 0 into the stack
 
 	while (1)
 	{
-		int   state = stack_top(parse_stack);
-		Elem *elem  = &parse_table[state][token.type];
+		Elem_PS *elem_PS = stack_top(parse_stack);
+		Elem_PT  elem_PT = parse_table[elem_PS->state][token.type];
 
-		if (elem->action == SHIFT)
-		{
-			stack_push(parse_stack, elem->number);
-
-			if (token.type == NUM)
-				stack_push(value_stack, token.value);
-
-			token = get_next_token();
-		}
-		else if (elem->action == REDUCE)
-		{
-			for (int i = 1; i < COLUMNS_PRODUCTION_TABLE; i++)
-			{
-				if (production_table[elem->number][i] != EMPTY)
-					stack_pop(parse_stack);
-			}
-
-			if (elem->number == 0 ||
-			    elem->number == 1 ||
-			    elem->number == 3 ||
-			    elem->number == 4 )
-			{
-				int value1 = stack_pop(value_stack);
-				int value2 = stack_pop(value_stack);
-
-				switch (elem->number)
-				{
-					case 0: value1 = value1 + value2; break;
-					case 1: value1 = value2 - value1; break;
-					case 3: value1 = value1 * value2; break;
-					case 4: value1 = value2 / value1; break;
-				}
-
-				stack_push(value_stack, value1);
-			}
-
-			state = stack_top(parse_stack);
-
-			int heading = production_table[elem->number][0];
-			stack_push(parse_stack, parse_table[state][heading].number);
-		}
-		else if (elem->action == ACCEPT)
+		if (elem_PT.action == SHIFT)
+			shift(elem_PT.number);
+		else if (elem_PT.action == REDUCE)
+			reduce(elem_PT.number);
+		else if (elem_PT.action == ACCEPT)
 			break;
 		else
 			error("syntax error");
 	}
 
-	return stack_pop(value_stack);
+	Elem_PS *elem_PS = stack_top(parse_stack);
+
+	return elem_PS->node;
 }
