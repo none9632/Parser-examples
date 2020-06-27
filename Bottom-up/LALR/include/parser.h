@@ -2,8 +2,10 @@
 #define PARSER_H
 
 #include "lexer.h"
+#include "node.h"
+#include "error.h"
 #include "stack.h"
 
-int LALR_parser();
+Node *LALR_parser();
 
 #endif

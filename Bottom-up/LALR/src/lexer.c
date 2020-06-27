@@ -2,12 +2,6 @@
 
 static char *input_str;
 
-void error(char *message)
-{
-	printf("error: %s\n", message);
-	exit(EXIT_FAILURE);
-}
-
 static Token get_num_token()
 {
 	Token token;
@@ -47,12 +41,6 @@ Token get_next_token()
 		case '9':
 			token = get_num_token();
 			break;
-		case '(':
-			token.type = LP;
-			break;
-		case ')':
-			token.type = RP;
-			break;
 		case '+':
 			token.type = PLUS;
 			break;
@@ -64,6 +52,12 @@ Token get_next_token()
 			break;
 		case '/':
 			token.type = SLASH;
+			break;
+		case '(':
+			token.type = LP;
+			break;
+		case ')':
+			token.type = RP;
 			break;
 		case '\0':
 			token.type = EOI;
