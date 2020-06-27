@@ -9,10 +9,10 @@ is very similar, the only difference is in `parse_table`.
 
 ## Build and run
     $ make
-    $ ./SLR_parser <expression>
+    $ ./SLR_parser(or ./LR_parser or LALR_parser) <expression>
     
 ## Testing
-    $ make test (or ./test.sh)
+    $ make test
 
 ## Grammar
     E -> E + T      (0)
@@ -27,21 +27,21 @@ is very similar, the only difference is in `parse_table`.
 ## Example
 Example of how SLR(1) parses the string `1+2*3`:
 
-Parse stack | Value stack | Input | Parser action
-------------|-------------|-------|--------------
-S(0) | NULL | 1+2*3$ | Shift S(4) 
-S(0)S(4) | 1 | +2*3$ | Reduce R(6) 
-S(0)S(5) | 1 | +2*3$ | Reduce R(5)
-S(0)S(2) | 1 | +2*3$ | Reduce R(2)
-S(0)S(1) | 1 | +2*3$ | Shift S(6)
-S(0)S(1)S(6) | 1 | 2*3$ | Shift S(4)
-S(0)S(1)S(6)S(4) | 1 2 | *3$ | Reduce R(6)
-S(0)S(1)S(6)S(5) | 1 2 | *3$ | Reduce R(5)
-S(0)S(1)S(6)S(12) | 1 2 | *3$ | Shift S(8)
-S(0)S(1)S(6)S(12)S(8) | 1 2 | $ | Shift S(4)
-S(0)S(1)S(6)S(12)S(8)S(13) | 1 2 3 | $ | Reduce R(3)
-S(0)S(1)S(6)S(11) | 1 6 | $ | Reduce R(0)
-S(0)S(1) | 7 | $ | Accept
+Parse stack                | Value stack | Input  | Parser action
+---------------------------|-------------|--------|--------------
+S(0)                       | NULL        | 1+2*3$ | Shift S(4) 
+S(0)S(4)                   | 1           | +2*3$  | Reduce R(6) 
+S(0)S(5)                   | 1           | +2*3$  | Reduce R(5)
+S(0)S(2)                   | 1           | +2*3$  | Reduce R(2)
+S(0)S(1)                   | 1           | +2*3$  | Shift S(6)
+S(0)S(1)S(6)               | 1           | 2*3$   | Shift S(4)
+S(0)S(1)S(6)S(4)           | 1 2         | *3$    | Reduce R(6)
+S(0)S(1)S(6)S(5)           | 1 2         | *3$    | Reduce R(5)
+S(0)S(1)S(6)S(12)          | 1 2         | *3$    | Shift S(8)
+S(0)S(1)S(6)S(12)S(8)      | 1 2         | $      | Shift S(4)
+S(0)S(1)S(6)S(12)S(8)S(13) | 1 2 3       | $      | Reduce R(3)
+S(0)S(1)S(6)S(11)          | 1 6         | $      | Reduce R(0)
+S(0)S(1)                   | 7           | $      | Accept
 
 ### Description
 

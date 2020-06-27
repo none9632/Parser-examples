@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+#include "error.h"
+
+// Terminal symbols
 enum
 {
 	NUM,        // Number literal
@@ -17,6 +20,15 @@ enum
 	EOI,        // End of input
 };
 
+// Non-terminal symbols
+enum
+{
+	EXPR = 8,
+	TERM,
+	FACT
+};
+
+
 typedef struct token
 {
 	int type;
@@ -26,6 +38,5 @@ Token;
 
 Token get_next_token ();
 void  init_lexer     (char *input_str);
-void  error          (char *message);
 
 #endif

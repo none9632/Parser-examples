@@ -1,6 +1,6 @@
 #!/bin/bash
 
-program_path=./LR_parser
+program_path=../LR_parser
 red="\033[38;2;255;0;0m"
 green="\033[38;2;0;255;0m"
 results=0
@@ -12,15 +12,16 @@ function test
     start=$(date +%s.%N)
     output=$($program_path "$1")
     dif=$(echo "$(date +%s.%N) - $start" | bc)
+    right_output=$(cat $2)
 
-     printf " %.4fs |" $dif
+    printf " %.4fs |" $dif
 
-    if [ "$output" = "$2" ]
+    if [ "$output" = "$right_output" ]
     then
-        echo -e " -$green OK \e[0m-       $1 => $output"
+        echo -e " -$green OK \e[0m-       $1"
     else
         results=1
-        echo -e " -$red ERROR \e[0m-    $1 => $output"
+        echo -e " -$red ERROR \e[0m-    $1"
     fi
 }
 
@@ -30,23 +31,22 @@ echo "--------------------------------------------------------------------"
 
 if [ -e $program_path ]
 then
-    test "0" "0"
-    test "1+1" "2"
-    test "1+(2*3)" "7"
-    test "2*3+4" "10"
-    test "2*3+4*5" "26"
-    test "50/10" "5"
-    test "3/2" "1"
-    test "6*3/2" "9"
-    test "(2+3)*(4+5)" "45"
-    test "1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17" "153"
-    test "12*(32)" "384"
-    test "12 * (   32   )" "384"
-    test "12(32)" "error: syntax error"
-    test "5++" "error: syntax error"
-    test "532/" "error: syntax error"
-    test "()234" "error: syntax error"
-    test "word" "error: unknown character"
+    test "0" output/test1
+    test "1+2" output/test2
+    test "1-(2*3)" output/test3
+    test "2*3+4" output/test4
+    test "2*3-4*5" output/test5
+    test "50/10" output/test6
+    test "6-3/2" output/test7
+    test "(2+3)*(4-5)" output/test8
+    test "1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17" output/test9
+    test "12*(32)" output/test10
+    test "12 * (   32   )" output/test11
+    test "12(32)" output/test12
+    test "5++" output/test13
+    test "532/" output/test14
+    test "()234" output/test15
+    test "word" output/test16
 else
     results=1
     echo ""

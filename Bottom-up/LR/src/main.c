@@ -3,6 +3,7 @@
 
 #include "../include/lexer.h"
 #include "../include/parser.h"
+#include "../include/node.h"
 
 static void usage()
 {
@@ -12,12 +13,10 @@ static void usage()
 
 int main(int argc, char **argv)
 {
-	int result;
-
 	if (argc != 2)
 		usage();
 
 	init_lexer(argv[1]);
-	result = LR_parser();
-	printf("%i\n", result);
+	Node *tree = LR_parser();
+	start_print_node(tree);
 }

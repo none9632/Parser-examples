@@ -79,17 +79,17 @@ static int production_table[LINE_PRODUCTION_TABLE][COLUMNS_PRODUCTION_TABLE] =
 		{ EPSILON,    EMPTY, EMPTY    }
 };
 
-static Elem_PS *new_elem_PT(int state, Node *node)
+static Elem_PS *new_elem_PS(int state, Node *node)
 {
-	Elem_PS *elem_PT = malloc(sizeof(Elem_PS));
+	Elem_PS *elem_PS = malloc(sizeof(Elem_PS));
 
-	if (elem_PT == NULL)
-		error("memory allocation error in new_elem_PT()");
+	if (elem_PS == NULL)
+		error("memory allocation error in new_elem_PS()");
 
-	elem_PT->state = state;
-	elem_PT->node  = node;
+	elem_PS->state = state;
+	elem_PS->node  = node;
 
-	return elem_PT;
+	return elem_PS;
 }
 
 // Getting index from non terminal
@@ -108,7 +108,7 @@ static void predict(Elem_PS *top_elem)
 
 	stack_pop(parse_stack);
 
-	for (int i = 0; i < COLUMNS_PRODUCTION_TABLE; i++)
+	for (int i = 0; i < COLUMNS_PRODUCTION_TABLE; ++i)
 	{
 		int elem = production_table[index][i];
 
@@ -116,7 +116,7 @@ static void predict(Elem_PS *top_elem)
 		{
 			top_elem->node->n[i] = new_node(elem);
 			if (elem != EPSILON)
-				stack_push(parse_stack, new_elem_PT(elem, top_elem->node->n[i]));
+				stack_push(parse_stack, new_elem_PS(elem, top_elem->node->n[i]));
 		}
 	}
 }
@@ -138,7 +138,7 @@ Node *LL_parser()
 	token       = get_next_token();
 	parse_stack = new_stack();
 
-	stack_push(parse_stack, new_elem_PT(EXPR, tree));
+	stack_push(parse_stack, new_elem_PS(EXPR, tree));
 
 	while (parse_stack->length > 0)
 	{
