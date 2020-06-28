@@ -30,13 +30,11 @@ void stack_push(Stack *s, void *elem)
 	s->data[s->length++] = elem;
 }
 
-// removes and returns a top value
 void *stack_pop(Stack *s)
 {
 	return s->data[--s->length];
 }
 
-// returns a top value
 void *stack_top(Stack *s)
 {
 	return s->data[s->length - 1];

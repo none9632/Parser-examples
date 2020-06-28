@@ -92,7 +92,6 @@ static Elem_PS *new_elem_PS(int state, Node *node)
 	return elem_PS;
 }
 
-// Getting index from non terminal
 static int nonterminal_to_index(int nonterminal)
 {
 	return nonterminal - EXPR;
@@ -100,7 +99,6 @@ static int nonterminal_to_index(int nonterminal)
 
 static void predict(Elem_PS *top_elem)
 {
-	// getting index from parser_table
 	int index = parse_table[nonterminal_to_index(top_elem->state)][token.type];
 
 	if (index == EMPTY)

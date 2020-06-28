@@ -20,9 +20,9 @@ enum
 typedef struct elem_parse_table
 {
 	int action;
-	int number;
+	int value;
 }
-		Elem_PT;
+Elem_PT;
 
 typedef struct elem_parse_stack
 {
@@ -153,13 +153,13 @@ static void shift(int state)
 	token = get_next_token();
 }
 
-static void reduce(int number)
+static void reduce(int value)
 {
-	Node *node = new_node(production_table[number][0]);
+	Node *node = new_node(production_table[value][0]);
 
 	for (int i = 1; i < COLUMNS_PRODUCTION_TABLE; ++i)
 	{
-		if (production_table[number][i] != EMPTY)
+		if (production_table[value][i] != EMPTY)
 		{
 			Elem_PS *elem_PS = stack_pop(parse_stack);
 			node->n[i - 1] = elem_PS->node;
@@ -167,8 +167,8 @@ static void reduce(int number)
 	}
 
 	Elem_PS *elem_PS = stack_top(parse_stack);
-	int      heading = production_table[number][0];
-	int      state   = parse_table[elem_PS->state][heading].number;
+	int      heading = production_table[value][0];
+	int      state   = parse_table[elem_PS->state][heading].value;
 
 	stack_push(parse_stack, new_elem_PS(state, node));
 }
@@ -178,7 +178,7 @@ Node *SLR_parser()
 	token       = get_next_token();
 	parse_stack = new_stack();
 
-	stack_push(parse_stack, new_elem_PS(0, NULL));  // push state 0 into the stack
+	stack_push(parse_stack, new_elem_PS(0, NULL));
 
 	while (1)
 	{
@@ -186,9 +186,9 @@ Node *SLR_parser()
 		Elem_PT  elem_PT = parse_table[elem_PS->state][token.type];
 
 		if (elem_PT.action == SHIFT)
-			shift(elem_PT.number);
+			shift(elem_PT.value);
 		else if (elem_PT.action == REDUCE)
-			reduce(elem_PT.number);
+			reduce(elem_PT.value);
 		else if (elem_PT.action == ACCEPT)
 			break;
 		else
